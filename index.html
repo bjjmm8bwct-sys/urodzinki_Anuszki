@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wszystkiego Najlepszego Kochaniuszka! 🎉</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Open+Sans:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     
     <style>
         /* ************************************************
@@ -110,6 +110,14 @@
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
         
+        /* NOWY STYL DLA TEKSTU ŻYCZEŃ */
+        #typed-text {
+            font-family: 'Dancing Script', cursive; /* Nowa, ładniejsza czcionka */
+            font-size: 1.4em;
+            color: var(--primary-color); /* Różowy kolor */
+            font-weight: 700;
+        }
+
         /* Kursor symulujący maszynę do pisania */
         .typing-cursor {
             display: inline-block;
@@ -220,7 +228,7 @@
         }
     </style>
 </head>
-<body onload="startConfetti(document.body)"> <div class="container">
+<body> <div class="container">
 
         <section id="welcome-section" class="active">
             <h1>Wszystkiego Najlepszego Kochaniuszka!</h1>
@@ -284,7 +292,7 @@
         // Hasło do zagadki
         const CORRECT_ANSWER = "w kominie"; 
 
-        // PEŁNA TREŚĆ ŻYCZEŃ
+        // PEŁNA TREŚĆ ŻYCZEŃ (BEZ "Kochaniuszka!")
         const WISHES_TEXT = 
             "Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze –\n\n" +
             "spokoju, radości, odwagi do spełniania marzeń i ludzi, którzy zawsze będą przy Tobie tak, jak Ty potrafisz być przy innych. Niech każdy dzień przynosi Ci nowe powody do radości, piękne chwile i poczucie, że jesteś dokładnie tam, gdzie powinnaś być.\n\n" +
@@ -311,6 +319,11 @@
                     if (nextId === 'wishes-section') {
                         startTypingEffect(WISHES_TEXT);
                     }
+                }
+                
+                // Konfetti tylko w sekcji prezentu!
+                if (nextId === 'gift-section') {
+                    startConfetti(document.body);
                 }
             }, 600);
         }
