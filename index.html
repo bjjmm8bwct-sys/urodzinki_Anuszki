@@ -219,4 +219,188 @@
          * 7. RESPONSYWNOŚĆ
          ************************************************
         */
-        @media
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5em; }
+            .container { padding: 20px 10px; width: 98%; }
+            .btn { padding: 10px 20px; font-size: 1em; }
+            .typing-container { min-height: 250px; }
+            .gift-details h3 { font-size: 1.4em; }
+            #pulsing-text { font-size: 1.2em; }
+        }
+    </style>
+</head>
+<body> <div class="container">
+
+        <section id="welcome-section" class="active">
+            <h1>Wszystkiego Najlepszego Kochaniuszka!</h1>
+            <p>To będzie wesoła przygoda! Kliknij poniżej, aby rozpocząć...</p>
+            <button class="btn" onclick="nextSection('wishes-section')">Rozpocznij przygodę 🥳</button>
+        </section>
+
+        <section id="wishes-section">
+            <h2>Przesłanie od Serca</h2>
+            <p>Poczekaj chwilę... piszę do Ciebie:</p>
+
+            <div class="typing-container">
+                <span id="typed-text" style="white-space: pre-wrap;"></span><span id="cursor" class="typing-cursor"></span>
+            </div>
+            
+            <button class="btn" id="continueWishesBtn" onclick="nextSection('quiz-section')">Dalej do Misji Specjalnej ➡️</button>
+        </section>
+
+        <section id="quiz-section">
+            <h2>Zagadka Urodzinowa 🤫</h2>
+            <p>Masz już życzenia, teraz czas na test! Wpisz hasło (małe litery, bez polskich znaków):</p>
+            
+            <p><strong>Pytanie:</strong> Gdzie mali Żydzi minęli się w Mikołajem w święta?</p>
+
+            <input type="text" id="answerInput" placeholder="Wpisz odpowiedź..." maxlength="20">
+            <div class="quiz-feedback" id="feedback"></div>
+
+            <button class="btn" onclick="checkAnswer()">Sprawdź Hasło</button>
+        </section>
+        
+        <section id="gift-section">
+            <h2>MISJA ZAKOŃCZONA SUKCESEM! 🎉</h2>
+            
+            <div class="gift-card">
+                
+                <img src="Pamiętasz, jak mówiłaś, że masz ochotę się wystroić i iść na miasto Pomyślałam, że stworzę Ci do tego okazję, ale w trochę innym wydaniu. Z okazji Twoich urodzin chcę zaprosić Cię na kobiecą sesję.jpg" 
+                     alt="Zaproszenie na kobiecą sesję zdjęciową w studio Światłoczułe" 
+                     class="gift-image">
+
+                <div class="gift-details">
+                    <h3>✨ Zaproszenie na Sesję Zdjęciową ✨</h3>
+                </div>
+            </div>
+            
+            <p id="pulsing-text">Jeszcze raz: Sto Lat! ❤️</p>
+        </section>
+        
+        <footer>
+            <p style="font-size: 0.8em; color: #aaa;">Strona stworzona specjalnie dla Ani.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        /* ************************************************
+         * LOGIKA JAVASCRIPT
+         ************************************************
+        */
+        let currentSectionId = 'welcome-section';
+
+        // Hasło do zagadki
+        const CORRECT_ANSWER = "w kominie"; 
+
+        // PEŁNA TREŚĆ ŻYCZEŃ (Zaktualizowana treść)
+        const WISHES_TEXT = 
+            "Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze – spokoju, radości, odwagi do spełniania marzeń i ludzi, którzy zawsze będą przy Tobie tak, jak Ty potrafisz być przy innych. Niech każdy dzień przynosi Ci nowe powody do radości, piękne chwile i poczucie, że jesteś dokładnie tam, gdzie powinnaś być.\n\n" +
+            "Życzę Ci też, żebyś zawsze miała siłę uśmiechać się do świata, a jeśli kiedykolwiek zdecydujemy się go spalić, to razem (i to Ty przyniesiesz zapalniczkę 😉)! Cieszę się, że Cię poznałam – serio, świat jest trochę mniej beznadziejny odkąd w nim jesteś.\n\n" +
+            "On potrzebuje takich ludzi jak Ty – prawdziwych, dobrych i pełnych światła. Nigdy się nie zmieniaj!!! Sto lat kochana!";
+
+        /**
+         * Zmienia wyświetlaną sekcję z płynnym przejściem.
+         */
+        function nextSection(nextId) {
+            const current = document.getElementById(currentSectionId);
+            const next = document.getElementById(nextId);
+
+            if (current) { current.classList.remove('active'); }
+
+            setTimeout(() => {
+                current.style.display = 'none';
+                if (next) {
+                    next.style.display = 'block';
+                    void next.offsetWidth; 
+                    next.classList.add('active');
+                    currentSectionId = nextId;
+
+                    if (nextId === 'wishes-section') {
+                        startTypingEffect(WISHES_TEXT);
+                    }
+                }
+                
+                // Konfetti tylko w sekcji prezentu!
+                if (nextId === 'gift-section') {
+                    startConfetti(document.body);
+                }
+            }, 600);
+        }
+
+        /**
+         * Funkcja do symulacji efektu maszyny do pisania.
+         */
+        function startTypingEffect(text, speed = 40) { 
+            const outputElement = document.getElementById('typed-text');
+            const continueBtn = document.getElementById('continueWishesBtn');
+            const cursor = document.getElementById('cursor');
+            
+            outputElement.textContent = ''; 
+            continueBtn.style.display = 'none'; 
+
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    outputElement.textContent += text.charAt(i);
+                    i++;
+                    const variableSpeed = speed + Math.random() * 20; 
+                    setTimeout(type, variableSpeed);
+                } else {
+                    continueBtn.style.display = 'block';
+                    cursor.style.display = 'none';
+                }
+            }
+            cursor.style.display = 'inline-block';
+            type();
+        }
+
+        /**
+         * Sprawdza odpowiedź użytkownika w sekcji Zagadki i od razu przechodzi do prezentu.
+         */
+        function checkAnswer() {
+            const input = document.getElementById('answerInput');
+            const feedback = document.getElementById('feedback');
+            
+            const userAnswer = input.value.trim().toLowerCase(); 
+
+            if (userAnswer === CORRECT_ANSWER) {
+                feedback.style.color = 'green';
+                feedback.textContent = "🥳 BINGO! Przechodzimy prosto do prezentu!";
+                setTimeout(() => {
+                    nextSection('gift-section'); 
+                }, 1000);
+            } else {
+                feedback.style.color = 'red';
+                feedback.textContent = "❌ Nie to... Spróbuj pisać małymi literami i sprawdź spacje!";
+                input.value = '';
+            }
+        }
+
+        /**
+         * Generuje i animuje konfetti CSS.
+         */
+        function startConfetti(container) {
+            const pieces = 50; 
+            const colors = ['var(--primary-color)', 'var(--secondary-color)', 'var(--accent-color)', 'white'];
+
+            for (let i = 0; i < pieces; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                piece.style.top = `${Math.random() * 5}%`; 
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.width = `${Math.random() * 10 + 5}px`;
+                piece.style.height = piece.style.width;
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = `${Math.random() * 0.5}s`;
+                piece.style.animationDuration = `${Math.random() * 1.5 + 1.5}s`;
+                
+                container.appendChild(piece); 
+                
+                // Usunięcie kawałka konfetti po zakończeniu animacji
+                piece.addEventListener('animationend', () => piece.remove());
+            }
+        }
+    </script>
+</body>
+</html>
