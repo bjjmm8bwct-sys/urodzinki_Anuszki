@@ -1,3 +1,14 @@
+Rozumiem! Zmodyfikuję kod, aby usunąć powitanie "Kochaniuszka!" z treści życzeń, zachowując przy tym wszystkie ustalone efekty (maszyna do pisania, zagadka, bezpośrednie przejście do vouchera).
+
+Usunięta fraza: "Kochaniuszka! Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze –"
+
+Nowa treść życzeń (zaczynająca się od "Nie wiem...")
+
+✂️ Zmodyfikowany Kod Strony (index.html)
+Proszę, zastąp całą zawartość swojego pliku index.html tym nowym kodem.
+
+HTML
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -276,9 +287,9 @@
         // Hasło do zagadki
         const CORRECT_ANSWER = "w kominie"; 
 
-        // PEŁNA TREŚĆ ŻYCZEŃ
+        // PEŁNA TREŚĆ ŻYCZEŃ (Usunięto "Kochaniuszka!")
         const WISHES_TEXT = 
-            "Kochaniuszka! Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze –\n\n" +
+            "Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze –\n\n" +
             "spokoju, radości, odwagi do spełniania marzeń i ludzi, którzy zawsze będą przy Tobie tak, jak Ty potrafisz być przy innych. Niech każdy dzień przynosi Ci nowe powody do radości, piękne chwile i poczucie, że jesteś dokładnie tam, gdzie powinnaś być.\n\n" +
             "Życzę Ci też, żebyś zawsze miała siłę uśmiechać się do świata, a jeśli kiedykolwiek zdecydujemy się go spalić, to razem (i to Ty przyniesiesz zapalniczkę 😉)! Cieszę się, że Cię poznałam – serio, świat jest trochę mniej beznadziejny odkąd w nim jesteś.\n\n" +
             "On potrzebuje takich ludzi jak Ty – prawdziwych, dobrych i pełnych światła. Ale to nie wszystko! Zanim przejdziesz do finału, czeka Cię mała niespodzianka... Nigdy się nie zmieniaj!!! Sto lat kochana!";
@@ -328,7 +339,6 @@
                 if (i < text.length) {
                     outputElement.textContent += text.charAt(i);
                     i++;
-                    // Dodaj losowe opóźnienie dla naturalniejszego efektu maszyny do pisania
                     const variableSpeed = speed + Math.random() * 20; 
                     setTimeout(type, variableSpeed);
                 } else {
@@ -353,7 +363,6 @@
                 feedback.style.color = 'green';
                 feedback.textContent = "🥳 BINGO! Przechodzimy prosto do prezentu!";
                 setTimeout(() => {
-                    // Bezpośrednie przejście do sekcji prezentu
                     nextSection('gift-section'); 
                 }, 1000);
             } else {
