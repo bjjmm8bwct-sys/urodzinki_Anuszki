@@ -1,14 +1,3 @@
-Rozumiem! Zmodyfikuję kod, aby usunąć powitanie "Kochaniuszka!" z treści życzeń, zachowując przy tym wszystkie ustalone efekty (maszyna do pisania, zagadka, bezpośrednie przejście do vouchera).
-
-Usunięta fraza: "Kochaniuszka! Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze –"
-
-Nowa treść życzeń (zaczynająca się od "Nie wiem...")
-
-✂️ Zmodyfikowany Kod Strony (index.html)
-Proszę, zastąp całą zawartość swojego pliku index.html tym nowym kodem.
-
-HTML
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -187,6 +176,19 @@ HTML
              color: var(--secondary-color);
              margin: 10px 0;
         }
+        
+        /* Animacja PULSOWANIA TEKSTU "STO LAT" */
+        @keyframes pulse-text {
+            0% { transform: scale(1); color: var(--primary-color); }
+            50% { transform: scale(1.1); color: var(--accent-color); }
+            100% { transform: scale(1); color: var(--primary-color); }
+        }
+        #pulsing-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            animation: pulse-text 2s infinite ease-in-out;
+            margin-top: 20px;
+        }
 
         /* Konfetti CSS */
         .confetti-piece {
@@ -214,12 +216,11 @@ HTML
             .btn { padding: 10px 20px; font-size: 1em; }
             .typing-container { min-height: 250px; }
             .gift-details h3 { font-size: 1.4em; }
+            #pulsing-text { font-size: 1.2em; }
         }
     </style>
 </head>
-<body>
-
-    <div class="container">
+<body onload="startConfetti(document.body)"> <div class="container">
 
         <section id="welcome-section" class="active">
             <h1>Wszystkiego Najlepszego Kochaniuszka!</h1>
@@ -252,7 +253,6 @@ HTML
         
         <section id="gift-section">
             <h2>MISJA ZAKOŃCZONA SUKCESEM! 🎉</h2>
-            <p>Dotarłaś do swojego super prezentu, Kochana!</p>
             
             <div class="gift-card">
                 
@@ -262,13 +262,10 @@ HTML
 
                 <div class="gift-details">
                     <h3>✨ Zaproszenie na Sesję Zdjęciową ✨</h3>
-                    <p style="font-weight: bold; color: var(--secondary-color);">Szczegóły z vouchera:</p>
-                    <p>Zapraszam Cię na **kobiecą sesję w studio "Światłoczułe"**, abyś mogła poczuć się wyjątkowo – dziś i każdego innego dnia!</p>
-                    <p>Termin oczywiście do dogadania. Jestem pewna, że spędzimy razem miło czas, a Tobie zostanie piękna pamiątka!</p>
                 </div>
             </div>
             
-            <p style="margin-top: 20px;">Jeszcze raz: Sto Lat! ❤️</p>
+            <p id="pulsing-text">Jeszcze raz: Sto Lat! ❤️</p>
         </section>
         
         <footer>
@@ -287,7 +284,7 @@ HTML
         // Hasło do zagadki
         const CORRECT_ANSWER = "w kominie"; 
 
-        // PEŁNA TREŚĆ ŻYCZEŃ (Usunięto "Kochaniuszka!")
+        // PEŁNA TREŚĆ ŻYCZEŃ
         const WISHES_TEXT = 
             "Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze –\n\n" +
             "spokoju, radości, odwagi do spełniania marzeń i ludzi, którzy zawsze będą przy Tobie tak, jak Ty potrafisz być przy innych. Niech każdy dzień przynosi Ci nowe powody do radości, piękne chwile i poczucie, że jesteś dokładnie tam, gdzie powinnaś być.\n\n" +
@@ -314,11 +311,6 @@ HTML
                     if (nextId === 'wishes-section') {
                         startTypingEffect(WISHES_TEXT);
                     }
-                }
-                
-                if (nextId === 'gift-section') {
-                    // Konfetti tylko przy PRAWDZIWYM prezencie!
-                    startConfetti(document.body);
                 }
             }, 600);
         }
@@ -392,6 +384,7 @@ HTML
                 
                 container.appendChild(piece); 
                 
+                // Usunięcie kawałka konfetti po zakończeniu animacji
                 piece.addEventListener('animationend', () => piece.remove());
             }
         }
