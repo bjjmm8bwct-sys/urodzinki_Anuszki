@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wszystkiego Najlepszego, Kochaniuszko! 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ************************************************
+         * 1. ZMIENNE I PODSTAWOWE STYLE (WESOŁY KLIMAT)
+         ************************************************
+        */
+        :root {
+            --primary-color: #ff69b4; /* Żywy Róż (Hot Pink) - główny akcent */
+            --secondary-color: #6a5acd; /* Fioletowy Akcent (Slate Blue) - nagłówki */
+            --accent-color: #ffd700; /* Złoty (Gold) - efekt WOW, konfetti */
+            --text-color: #333;
+            --light-bg: #f8f8ff; /* Prawie biały, lekko wesoły */
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Wesoły gradient w tle */
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* ************************************************
+         * 2. STYL GŁÓWNEGO KONTENERA I SEKCJI
+         ************************************************
+        */
+        .container {
+            background-color: var(--light-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            max-width: 90%;
+            width: 550px;
+            position: relative;
+        }
+
+        section {
+            display: none;
+            padding: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2 {
+            font-family: 'Bangers', cursive;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: var(--accent-color);
+            text-shadow: 3px 3px var(--primary-color);
+        }
+        
+        /* ************************************************
+         * 3. STYLE PRZYCISKÓW
+         ************************************************
+        */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #e35a9f; /* Ciemniejszy róż */
+            transform: translateY(-5px) scale(1.05);
+        }
+        
+        /* ************************************************
+         * 4. STYL SEKCJI ŻYCZEŃ (WESOŁE KARTY)
+         ************************************************
+        */
+        .card-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Dwa elementy w rzędzie */
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .wish-card {
+            min-height: 120px;
+            cursor: pointer;
+            perspective: 1000px;
+            box-sizing: border-box;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
+        }
+        .wish-card.revealed .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+            border-radius: 15px;
+            font-weight: bold;
+            line-height: 1.4;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .card-front {
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            font-size: 1.1em;
+        }
+        .card-back {
+            background-color: var(--secondary-color);
+            color: var(--light-bg);
+            transform: rotateY(180deg);
+        }
+        #continueWishesBtn { display: none; }
+
+        /* ************************************************
+         * 5. STYL SEKCJI ZAGADKI/MISJI
+         ************************************************
+        */
+        .quiz-section input[type="text"] {
+            padding: 12px 20px;
+            border: 3px solid var(--primary-color);
+            border-radius: 30px;
+            font-size: 1.1em;
+            width: 80%;
+            max-width: 300px;
+            margin-bottom: 10px;
+            text-align: center;
+            background-color: white;
+        }
+        .quiz-feedback {
+            color: red;
+            margin-top: -5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            min-height: 20px; 
+        }
+
+        /* ************************************************
+         * 6. STYL SEKCJI PREZENTU (OSADZENIE JPG)
+         ************************************************
+        */
+        .gift-section .gift-card {
+            background-color: var(--light-bg);
+            border: 5px dashed var(--primary-color);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 0 10px var(--accent-color); /* Podwójna ramka */
+            animation: pulse 1.5s infinite alternate; 
+            margin-top: 30px;
+            position: relative;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.02); }
+        }
+
+        .gift-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .gift-details h3 {
+             font-family: 'Open Sans', sans-serif;
+             font-size: 1.6em;
+             color: var(--secondary-color);
+             margin: 10px 0;
+        }
+        .gift-details p {
+            font-size: 1.1em;
+            color: var(--text-color);
+        }
+
+        /* Konfetti CSS (animacja radości) */
+        .confetti-piece {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
+            opacity: 0;
+            animation: fall 3s ease-out forwards;
+            pointer-events: none; /* Aby nie blokowały interakcji */
+            z-index: 1000;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ************************************************
+         * 7. RESPONSYWNOŚĆ
+         ************************************************
+        */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5em; }
+            .container { padding: 20px 10px; width: 98%; }
+            .btn { padding: 10px 20px; font-size: 1em; }
+            .card-container { grid-template-columns: 1fr; } /* Karty jedna pod drugą na mobile */
+            .wish-card { min-height: 80px; }
+            .card-face { font-size: 0.85em; }
+            .gift-details h3 { font-size: 1.4em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <section id="welcome-section" class="active">
+            <h1>Wszystkiego Najlepszego, Kochaniuszko!</h1>
+            <p>To będzie wesoła przygoda! Kliknij poniżej, aby rozpocząć...</p>
+            <button class="btn" onclick="nextSection('wishes-section')">Rozpocznij przygodę 🥳</button>
+        </section>
+
+        <section id="wishes-section">
+            <h2>Twoje 4 Bloki Życzeń</h2>
+            <p>Kliknij na każdy wesoły element, aby odkryć fragment życzeń.</p>
+
+            <div class="card-container">
+                <div class="wish-card" id="card1" onclick="revealCard(this)">
+                    <div class="card-inner">
+                        <div class="card-face card-front">🎊 Blok 1: Kochaniuszko!</div>
+                        <div class="card-face card-back">Kochaniuszka! Nie wiem, co los sobie myślał, kiedy nas ze sobą zetknął — ale jestem mu za to zajebiście wdzięczna! Z okazji Twoich urodzin życzę Ci wszystkiego, co najpiękniejsze –</div>
+                    </div>
+                </div>
+                <div class="wish-card" id="card2" onclick="revealCard(this)">
+                    <div class="card-inner">
+                        <div class="card-face card-front">💌 Blok 2: Odwaga i Spokój</div>
+                        <div class="card-face card-back">spokoju, radości, odwagi do spełniania marzeń i ludzi, którzy zawsze będą przy Tobie tak, jak Ty potrafisz być przy innych. Niech każdy dzień przynosi Ci nowe powody do radości, piękne chwile i poczucie, że jesteś dokładnie tam, gdzie powinnaś być.</div>
+                    </div>
+                </div>
+                <div class="wish-card" id="card3" onclick="revealCard(this)">
+                    <div class="card-inner">
+                        <div class="card-face card-front">🔥 Blok 3: Zapalniczka!</div>
+                        <div class="card-face card-back">Życzę Ci też, żebyś zawsze miała siłę uśmiechać się do świata, a jeśli kiedykolwiek zdecydujemy się go spalić, to razem (i to Ty przyniesiesz zapalniczkę 😉)! Cieszę się, że Cię poznałam – serio, świat jest trochę mniej beznadziejny odkąd w nim jesteś.</div>
+                    </div>
+                </div>
+                <div class="wish-card" id="card4" onclick="revealCard(this)">
+                    <div class="card-inner">
+                        <div class="card-face card-front">💖 Blok 4: Finał</div>
+                        <div class="card-face card-back">On potrzebuje takich ludzi jak Ty – prawdziwych, dobrych i pełnych światła. Ale to nie wszystko! Zanim przejdziesz do finału, czeka Cię mała niespodzianka... Nigdy się nie zmieniaj!!! Sto lat kochana!</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn" id="continueWishesBtn" onclick="nextSection('quiz-section')">Dalej do Misji Specjalnej ➡️</button>
+        </section>
+
+        <section id="quiz-section">
+            <h2>Zagadka Urodzinowa 🤫</h2>
+            <p>Masz już życzenia, teraz czas na test! Wpisz hasło (małe litery, bez polskich znaków):</p>
+            
+            <p><strong>Pytanie:</strong> Gdzie mali Żydzi minęli się w Mikołajem w święta?</p>
+
+            <input type="text" id="answerInput" placeholder="Wpisz odpowiedź..." maxlength="20">
+            <div class="quiz-feedback" id="feedback"></div>
+
+            <button class="btn" onclick="checkAnswer()">Sprawdź Hasło</button>
+        </section>
+
+        <section id="gift-section">
+            <h2>MISJA ZAKOŃCZONA SUKCESEM! 🎉</h2>
+            <p>Dotarłaś do swojego prezentu, Kochana!</p>
+            
+            <div class="gift-card">
+                
+                <img src="Pamiętasz, jak mówiłaś, że masz ochotę się wystroić i iść na miasto Pomyślałam, że stworzę Ci do tego okazję, ale w trochę innym wydaniu. Z okazji Twoich urodzin chcę zaprosić Cię na kobiecą sesję.jpg" 
+                     alt="Zaproszenie na kobiecą sesję zdjęciową w studio Światłoczułe" 
+                     class="gift-image">
+
+                <div class="gift-details">
+                    <h3>✨ Zaproszenie na Sesję Zdjęciową ✨</h3>
+                    <p style="font-weight: bold; color: var(--secondary-color);">Szczegóły z vouchera:</p>
+                    <p>Zapraszam Cię na **kobiecą sesję w studio "Światłoczułe"**, abyś mogła poczuć się wyjątkowo – dziś i każdego innego dnia!</p>
+                    <p>Termin oczywiście do dogadania. Jestem pewna, że spędzimy razem miło czas, a Tobie zostanie piękna pamiątka!</p>
+                </div>
+            </div>
+            
+            <p style="margin-top: 20px;">Jeszcze raz: Sto Lat! ❤️</p>
+        </section>
+        
+        <footer>
+            <p style="font-size: 0.8em; color: #aaa;">Strona stworzona specjalnie dla Ani.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        /* ************************************************
+         * LOGIKA JAVASCRIPT
+         ************************************************
+        */
+        let currentSectionId = 'welcome-section';
+        let revealedCardsCount = 0;
+        const totalCards = 4;
+
+        // Hasło do zagadki (WAŻNE: Bez spacji, polskich znaków)
+        const CORRECT_ANSWER = "w kominie"; 
+
+        /**
+         * Zmienia wyświetlaną sekcję z płynnym przejściem.
+         * @param {string} nextId ID następnej sekcji.
+         */
+        function nextSection(nextId) {
+            const current = document.getElementById(currentSectionId);
+            const next = document.getElementById(nextId);
+
+            if (current) { current.classList.remove('active'); }
+
+            setTimeout(() => {
+                current.style.display = 'none';
+                if (next) {
+                    next.style.display = 'block';
+                    void next.offsetWidth; 
+                    next.classList.add('active');
+                    currentSectionId = nextId;
+                }
+                
+                // Uruchomienie efektu konfetti, jeśli wchodzimy do sekcji prezentu
+                if (nextId === 'gift-section') {
+                    startConfetti(document.body);
+                }
+            }, 600);
+        }
+
+        /**
+         * Odwraca kartę życzeń i sprawdza, czy wszystkie zostały odkryte.
+         */
+        function revealCard(card) {
+            if (!card.classList.contains('revealed')) {
+                card.classList.add('revealed');
+                revealedCardsCount++;
+
+                if (revealedCardsCount === totalCards) {
+                    // Po odkryciu wszystkich kart pokaż przycisk "Dalej"
+                    document.getElementById('continueWishesBtn').style.display = 'block';
+                }
+            }
+        }
+
+        /**
+         * Sprawdza odpowiedź użytkownika w sekcji Zagadki.
+         */
+        function checkAnswer() {
+            const input = document.getElementById('answerInput');
+            const feedback = document.getElementById('feedback');
+            
+            // Konwersja do małych liter i usunięcie białych znaków
+            const userAnswer = input.value.trim().toLowerCase(); 
+
+            if (userAnswer === CORRECT_ANSWER) {
+                feedback.style.color = 'green';
+                feedback.textContent = "🥳 BINGO! Wygrywasz!";
+                setTimeout(() => {
+                    nextSection('gift-section');
+                }, 1000);
+            } else {
+                feedback.style.color = 'red';
+                feedback.textContent = "❌ Nie to... Spróbuj pisać małymi literami!";
+                input.value = '';
+            }
+        }
+
+        /**
+         * Generuje i animuje konfetti CSS.
+         */
+        function startConfetti(container) {
+            const pieces = 50; 
+            const colors = ['var(--primary-color)', 'var(--secondary-color)', 'var(--accent-color)', 'white'];
+
+            for (let i = 0; i < pieces; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('confetti-piece');
+                piece.style.top = `${Math.random() * 5}%`; 
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.width = `${Math.random() * 10 + 5}px`;
+                piece.style.height = piece.style.width;
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = `${Math.random() * 0.5}s`;
+                piece.style.animationDuration = `${Math.random() * 1.5 + 1.5}s`;
+                
+                container.appendChild(piece); 
+                
+                piece.addEventListener('animationend', () => piece.remove());
+            }
+        }
+    </script>
+</body>
+</html>
